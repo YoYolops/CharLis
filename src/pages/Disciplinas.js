@@ -2,9 +2,9 @@ import React, { useContext } from 'react';
 import { StyleSheet, Text, View, ScrollView, Pressable } from 'react-native';
 
 import DisciplinasContext from '../components/context/DisciplinasContext'
-import AddButton from '../components/addButton';
+import Footer from '../components/footer';
 
-function Disciplinas() {
+function Disciplinas({ navigation }) {
     const { disciplinas } = useContext(DisciplinasContext)
     return (
         <>
@@ -15,7 +15,7 @@ function Disciplinas() {
                             {
                                 backgroundColor: pressed
                                 ? '#15d157'
-                                : '#1db954'
+                                : '#191919'
                             },
                             styles.disciplinaCadastrada
                         ]
@@ -32,7 +32,7 @@ function Disciplinas() {
                     )
                 })}
             </ScrollView>
-            <AddButton />
+            <Footer navegacao={navigation}/>
         </>
     )
 }
@@ -51,19 +51,22 @@ const styles = StyleSheet.create({
         height: 64,
         borderRadius: 5,
         justifyContent: 'space-between',
+        borderWidth: 2,
+        borderColor: '#1db954',
     },
     nomeDisciplina: {
         display: 'flex',
         margin: 10,
         fontSize: 20,
-        color: '#fff'
+        color: '#1db954',
+
     },
     horarioDisciplinaContainer: {
         margin: 10,
         right: 0,
     },
     horarioDisciplina: {
-        color: '#fff'
+        color: '#1db954'
     }
 })
 

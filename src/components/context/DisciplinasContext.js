@@ -3,6 +3,7 @@ import React, { createContext, useState } from 'react';
 const DisciplinasContext = createContext({});
 
 export function DisciplinasProvider({ children }) {
+    const [ darkModeActive, setDarkModeActive ] = useState(false)
     const [ disciplinas, setDisciplinas ] = useState([
 
         {
@@ -119,12 +120,17 @@ export function DisciplinasProvider({ children }) {
         setDisciplinas(novoArrayDiscplinas)
     }
 
+    function switchDarkMode() {
+        setDarkModeActive(!darkModeActive)
+    }
 
     return (
         <DisciplinasContext.Provider
             value={{
                 disciplinas,
                 adicionarDisciplina,
+                darkModeActive,
+                switchDarkMode
             }}
         >
             {children}

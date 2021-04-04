@@ -1,8 +1,9 @@
 import React from 'react';
 import { StyleSheet, Pressable, View } from 'react-native';
+
 import Icon from 'react-native-vector-icons/AntDesign';
 
-function AddButton() {
+function Footer(props) {
     return (
         <View style={styles.footerContainer}>
             <Pressable style={({ pressed }) => [
@@ -13,7 +14,9 @@ function AddButton() {
                 },
                 styles.addIconContainer
             ]
-            }>
+            }
+            onPress={() => props.navegacao.navigate('Cadastrar Disciplina')}
+            >
                 <Icon name="plus" size={50} style={styles.addIcon} />
             </Pressable>
         </View>
@@ -44,4 +47,4 @@ const styles = StyleSheet.create({
     }
 })
 
-export default AddButton
+export default Footer;
