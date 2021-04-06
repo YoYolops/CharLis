@@ -1,30 +1,30 @@
 import React, { useContext, useState } from 'react';
 import { View, TextInput, Pressable, Text, StyleSheet } from 'react-native';
 
-import { Picker } from '@react-native-picker/picker';
 import DisciplinasContext from '../context/DisciplinasContext';
-import { Colors } from 'react-native/Libraries/NewAppScreen';
+import FormAddDia from './FormAddDia';
+import Entypo from 'react-native-vector-icons/Entypo';
+import { ScrollView } from 'react-native-gesture-handler';
+import { color } from 'react-native-reanimated';
 
 function FormAddDisciplina() {
     const { darkModeActive, colors } = useContext(DisciplinasContext)
 
     const [ nome, setNome ] = useState(null);
-    const [ horarioDaDisciplina, setHorarioDaDisciplina ] = useState([]);
-    const [ diaSemanaSelecionado, setDiaSemanaSelecionado ] = useState('');
-    const [ horarioInicio, setHorarioInicio ] = useState(null);
-    const [ horarioTermino, setHorarioTermino ] = useState(null);
 
-    const optionsDiaSemana = ['Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb', 'Dom'];
-    const optionsHorario = ['01','02','03','04','05','06','07','08','09','10','11','12','13','14','15','16','17','18','19','20','21','22','23','00'];
-    const optionsMinuto = ['00', '01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '27', '28', '29', '30', '31', '32', '33', '34', '35', '36', '37', '38', '39', '40', '41', '42', '43', '44', '45', '46', '47', '48', '49', '50', '51', '52', '53', '54', '55', '56', '57', '58', '59']
+    const [ dias, setDias ] = useState([<FormAddDia />]) /* pra cada elemento dessa lista, um dia de cadastro será criado */
+    function addDia() {
+        let novoArray = Array.from(dias)
+        novoArray.push(<FormAddDia key={novoArray.length} />)
+        setDias(novoArray)
+    }
 
     return (
-        <View style={[
+        <ScrollView style={[
                 {
                     backgroundColor: darkModeActive ? "#191919" : "#fff"
-                }
-                ,styles.formAddDisiplinaContainer]}
-            >
+                },
+                styles.formAddDisiplinaContainer]}>
             <Text style={[
                 {
                     color: darkModeActive ? "rgb(29, 185, 84)" : "#191919"
@@ -36,84 +36,22 @@ function FormAddDisciplina() {
             <TextInput
                 style={[
                     {
-                        color: darkModeActive ? 'rgb(29, 185, 84)' : "#191919"
-                    }
-                    ,styles.input]}
+                        color: darkModeActive ? colors.greenDefault : colors.blackDefault
+                    },
+                    styles.input]}
                 onChangeText={text => setNome(text)}
             >
             </TextInput>
-
             <View style={styles.blocoHorarios}>
-                <Picker
-                    style={styles.picker}
-                    selectedValue={diaSemanaSelecionado}
-                    onValueChange={(itemValue, itemIndex)  => setDiaSemanaSelecionado(itemValue)}
-                    mode={'dropdown'}
-                >
-                    {
-                        optionsDiaSemana.map(dia => <Picker.Item key={dia} color={darkModeActive ? "rgb(29, 185, 84)" : "#191919"} value={dia} label={dia} />)
-                    }
-                </Picker>
-
-                <View style={styles.deAte}>
-                    <Text
-                        style={{color: darkModeActive ? "rgb(29, 185, 84)" : "#191919"}}
-                    >
-                        De: 
-                    </Text>
-                    <Picker
-                        style={styles.picker}
-                        selectedValue={horarioInicio}
-                        onValueChange={(itemValue, itemIndex)  => console.log(itemValue)}
-                        mode={'dropdown'}
-                    >
-                        {
-                            optionsHorario.map(horario => <Picker.Item key={horario} color={darkModeActive ? "rgb(29, 185, 84)" : "#191919"} value={horario + 'h'} label={horario + 'h'} />)
-                        }
-                    </Picker>
-
-                    <Picker
-                        style={styles.picker}
-                        selectedValue={horarioTermino}
-                        onValueChange={(itemValue, itemIndex)  => console.log(itemValue)}
-                        mode={'dropdown'}
-                    >
-                        {
-                            optionsMinuto.map(minuto => <Picker.Item key={minuto} color={darkModeActive ? "rgb(29, 185, 84)" : "#191919"} value={minuto + ' min'} label={minuto + ' min'} />)
-                        }
-                    </Picker>
-                </View>
-
-                <View style={styles.deAte}>
-                    <Text
-                        style={{color: darkModeActive ? "rgb(29, 185, 84)" : "#191919"}}
-                    >
-                        Até: 
-                    </Text>
-                    <Picker
-                        style={styles.picker}
-                        selectedValue={horarioInicio}
-                        onValueChange={(itemValue, itemIndex)  => console.log(itemValue)}
-                        mode={'dropdown'}
-                    >
-                        {
-                            optionsHorario.map(horario => <Picker.Item key={horario} color={darkModeActive ? "rgb(29, 185, 84)" : "#191919"} value={horario + 'h'} label={horario + 'h'} />)
-                        }
-                    </Picker>
-
-                    <Picker
-                        style={styles.picker}
-                        selectedValue={diaSemanaSelecionado}
-                        onValueChange={(itemValue, itemIndex)  => console.log(itemValue)}
-                        mode={'dropdown'}
-                    >
-                        {
-                            optionsMinuto.map(minuto => <Picker.Item key={minuto} color={darkModeActive ? "rgb(29, 185, 84)" : "#191919"} value={minuto + ' min'} label={minuto + ' min'} />)
-                        }
-                    </Picker>
-                </View>
+                {
+                    dias.map(formadddia => formadddia)
+                }
+                <Pressable onPress={addDia} style={styles.insertScheduleButton} android_ripple={{color: 'rgb(29, 185, 84)', radius: 0}}>
+                    <Entypo name="add-to-list" size={20} />
+                    <Text style={styles.insertScheduleButtonText}>Adicionar Dia</Text>
+                </Pressable>
             </View>
-        </View>
+        </ScrollView>
     )
 }
 
@@ -121,7 +59,6 @@ const styles = StyleSheet.create({
     formAddDisiplinaContainer: {
         display: 'flex',
         flex: 1,
-        justifyContent: 'flex-start',
         borderLeftWidth: 3,
         borderLeftColor: 'rgb(29, 185, 84)',
     },
@@ -132,6 +69,7 @@ const styles = StyleSheet.create({
     },
     input: {
         margin: 10,
+        marginBottom: 15,
         marginTop: 0,
         height: 40,
         borderBottomWidth: 2,
@@ -141,18 +79,22 @@ const styles = StyleSheet.create({
         display: 'flex',
         flexDirection: 'column',
         flex: 1,
-        marginTop: 0,
     },
-    deAte: {
-        display: 'flex',
+    insertScheduleButton :{
+        alignItems: 'center',
+        justifyContent: 'center',
         flexDirection: 'row',
-        margin: 10,
-        borderBottomWidth: 2,
-        borderBottomColor: 'rgb(29, 185, 84)',
+        marginTop: 10,
+        marginBottom: 10,
+        marginRight: 90,
+        marginLeft: 90,
+        borderWidth: 2,
+        height: 32,
+        borderColor: "rgb(29, 185, 84)",
+        borderRadius: 5
     },
-    picker: {
-        width: 130,
-        height: 40,
+    insertScheduleButtonText: {
+        marginLeft: 5
     }
 })
 
