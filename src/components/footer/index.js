@@ -1,23 +1,44 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { StyleSheet, Pressable, View } from 'react-native';
 
-import Icon from 'react-native-vector-icons/AntDesign';
+import DisciplinasContext from '../context/DisciplinasContext';
+import AntDesign from 'react-native-vector-icons/AntDesign';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 function Footer(props) {
+    const { colors, darkModeActive, switchDarkMode } = useContext(DisciplinasContext)
+
     return (
-        <View style={styles.footerContainer}>
+        <View style={[
+            {
+                backgroundColor: darkModeActive ? colors.blackDefault : colors.greenDefault
+            },
+            styles.footerContainer
+        ]}>
+
             <Pressable style={({ pressed }) => [
                 {
                     backgroundColor: pressed
-                    ? '#15d157'
-                    : '#1db954'
+                    ? 'rgba(29, 185, 84, 0.5)'
+                    : 'rgba(29, 185, 84, 0)'
+                },
+                styles.addIconContainer
+            ]}
+            onPress={switchDarkMode}>
+                <MaterialCommunityIcons name="theme-light-dark" size={40} style={styles.addIcon} />
+            </Pressable>
+
+            <Pressable style={({ pressed }) => [
+                {
+                    backgroundColor: pressed
+                    ? 'rgba(29, 185, 84, 0.5)'
+                    : 'rgba(29, 185, 84, 0)'
                 },
                 styles.addIconContainer
             ]
             }
-            onPress={() => props.navegacao.navigate('Cadastrar Disciplina')}
-            >
-                <Icon name="plus" size={50} style={styles.addIcon} />
+            onPress={() => props.navegacao.navigate('Cadastrar Disciplina')}>
+                <AntDesign name="pluscircleo" size={40} style={styles.addIcon} />
             </Pressable>
         </View>
     )
@@ -25,25 +46,27 @@ function Footer(props) {
 
 const styles = StyleSheet.create({
     footerContainer: {
-        backgroundColor: '#191919',
-        justifyContent: 'center',
-        alignItems: 'flex-end'
+        justifyContent: 'space-between',
+        alignItems: 'flex-end',
+        flexDirection: 'row',
+        borderTopWidth: 1,
+        borderTopColor: '#fff'
     },
     addIconContainer: {
         justifyContent: 'center',
         alignItems: 'center',
         position: 'relative',
-        width: 50,
-        height: 50,
+        width: 40,
+        height: 40,
         right: 0,
         margin: 10,
         borderRadius: 25,
         bottom: 0
     },
     addIcon: {
-        backgroundColor: "rgba(21, 209, 87,0)",
         color: '#fff',
-        borderRadius: 25,
+        borderRadius: 20,
+        backgroundColor: 'rgba(0,0,0,0)'
     }
 })
 

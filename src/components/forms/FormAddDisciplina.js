@@ -3,9 +3,10 @@ import { View, TextInput, Pressable, Text, StyleSheet } from 'react-native';
 
 import { Picker } from '@react-native-picker/picker';
 import DisciplinasContext from '../context/DisciplinasContext';
+import { Colors } from 'react-native/Libraries/NewAppScreen';
 
 function FormAddDisciplina() {
-    const { darkModeActive } = useContext(DisciplinasContext)
+    const { darkModeActive, colors } = useContext(DisciplinasContext)
 
     const [ nome, setNome ] = useState(null);
     const [ horarioDaDisciplina, setHorarioDaDisciplina ] = useState([]);
@@ -47,6 +48,7 @@ function FormAddDisciplina() {
                     style={styles.picker}
                     selectedValue={diaSemanaSelecionado}
                     onValueChange={(itemValue, itemIndex)  => setDiaSemanaSelecionado(itemValue)}
+                    mode={'dropdown'}
                 >
                     {
                         optionsDiaSemana.map(dia => <Picker.Item key={dia} color={darkModeActive ? "rgb(29, 185, 84)" : "#191919"} value={dia} label={dia} />)
@@ -55,7 +57,7 @@ function FormAddDisciplina() {
 
                 <View style={styles.deAte}>
                     <Text
-                        style={darkModeActive ? "rgb(29, 185, 84)" : "#191919"}
+                        style={{color: darkModeActive ? "rgb(29, 185, 84)" : "#191919"}}
                     >
                         De: 
                     </Text>
@@ -63,6 +65,7 @@ function FormAddDisciplina() {
                         style={styles.picker}
                         selectedValue={horarioInicio}
                         onValueChange={(itemValue, itemIndex)  => console.log(itemValue)}
+                        mode={'dropdown'}
                     >
                         {
                             optionsHorario.map(horario => <Picker.Item key={horario} color={darkModeActive ? "rgb(29, 185, 84)" : "#191919"} value={horario + 'h'} label={horario + 'h'} />)
@@ -73,6 +76,7 @@ function FormAddDisciplina() {
                         style={styles.picker}
                         selectedValue={horarioTermino}
                         onValueChange={(itemValue, itemIndex)  => console.log(itemValue)}
+                        mode={'dropdown'}
                     >
                         {
                             optionsMinuto.map(minuto => <Picker.Item key={minuto} color={darkModeActive ? "rgb(29, 185, 84)" : "#191919"} value={minuto + ' min'} label={minuto + ' min'} />)
@@ -82,7 +86,7 @@ function FormAddDisciplina() {
 
                 <View style={styles.deAte}>
                     <Text
-                        style={darkModeActive ? "rgb(29, 185, 84)" : "#191919"}
+                        style={{color: darkModeActive ? "rgb(29, 185, 84)" : "#191919"}}
                     >
                         Até: 
                     </Text>
@@ -90,6 +94,7 @@ function FormAddDisciplina() {
                         style={styles.picker}
                         selectedValue={horarioInicio}
                         onValueChange={(itemValue, itemIndex)  => console.log(itemValue)}
+                        mode={'dropdown'}
                     >
                         {
                             optionsHorario.map(horario => <Picker.Item key={horario} color={darkModeActive ? "rgb(29, 185, 84)" : "#191919"} value={horario + 'h'} label={horario + 'h'} />)
@@ -100,6 +105,7 @@ function FormAddDisciplina() {
                         style={styles.picker}
                         selectedValue={diaSemanaSelecionado}
                         onValueChange={(itemValue, itemIndex)  => console.log(itemValue)}
+                        mode={'dropdown'}
                     >
                         {
                             optionsMinuto.map(minuto => <Picker.Item key={minuto} color={darkModeActive ? "rgb(29, 185, 84)" : "#191919"} value={minuto + ' min'} label={minuto + ' min'} />)

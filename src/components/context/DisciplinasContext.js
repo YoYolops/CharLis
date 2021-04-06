@@ -3,6 +3,11 @@ import React, { createContext, useState } from 'react';
 const DisciplinasContext = createContext({});
 
 export function DisciplinasProvider({ children }) {
+    const colors = {
+        greenDefault: "#1db954",
+        blackDefault: "#191919",
+        lightDefault: "#f2f2f2"
+    }
     const [ darkModeActive, setDarkModeActive ] = useState(false)
     const [ disciplinas, setDisciplinas ] = useState([
 
@@ -130,7 +135,8 @@ export function DisciplinasProvider({ children }) {
                 disciplinas,
                 adicionarDisciplina,
                 darkModeActive,
-                switchDarkMode
+                switchDarkMode,
+                colors
             }}
         >
             {children}

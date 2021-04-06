@@ -5,19 +5,24 @@ import DisciplinasContext from '../components/context/DisciplinasContext'
 import Footer from '../components/footer';
 
 function Disciplinas({ navigation }) {
-    const { disciplinas } = useContext(DisciplinasContext)
+    const { disciplinas, colors, darkModeActive } = useContext(DisciplinasContext)
     return (
         <>
-            <ScrollView style={styles.containerDisciplinas}>
+            <ScrollView style={[
+                {
+                    backgroundColor: darkModeActive ? colors.blackDefault : colors.lightDefault
+                },
+                styles.containerDisciplinas
+            ]}>
                 {disciplinas.map(disciplina => {
                     return (
                         <Pressable key={disciplina.nome} style={({ pressed }) => [
                             {
                                 backgroundColor: pressed
-                                ? '#15d157'
-                                : '#191919'
+                                ? 'rgba(29, 185, 84, 0.5)'
+                                : darkModeActive ? colors.blackDefault : colors.lightDefault,
                             },
-                            styles.disciplinaCadastrada
+                            darkModeActive ? styles.disciplinaCadastradaDark : styles.disciplinaCadastradaLight
                         ]
                         }>
                             <Text style={styles.nomeDisciplina}>{disciplina.nome}</Text>
@@ -39,10 +44,9 @@ function Disciplinas({ navigation }) {
 
 const styles = StyleSheet.create({
     containerDisciplinas: {
-        backgroundColor: '#191919',
         height: '100%',
     },
-    disciplinaCadastrada: {
+    disciplinaCadastradaDark: {
         flex: 1,
         flexDirection: 'row',
         margin: 5,
@@ -51,8 +55,22 @@ const styles = StyleSheet.create({
         height: 64,
         borderRadius: 5,
         justifyContent: 'space-between',
-        borderWidth: 2,
-        borderColor: '#1db954',
+        borderWidth: 3,
+        borderColor: "rgb(29, 185, 84)"
+    },
+    disciplinaCadastradaLight: {
+        flex: 1,
+        flexDirection: 'row',
+        margin: 5,
+        marginTop: 20,
+        marginBottom: 2,
+        height: 64,
+        borderRadius: 5,
+        justifyContent: 'space-between',
+        borderLeftWidth: 3,
+        borderLeftColor: "rgb(29, 185, 84)",
+        borderBottomWidth: 1,
+        borderBottomColor: "rgb(29, 185, 84)",
     },
     nomeDisciplina: {
         display: 'flex',
