@@ -10,97 +10,6 @@ export function DisciplinasProvider({ children }) {
     }
     const [ darkModeActive, setDarkModeActive ] = useState(false)
     const [ disciplinas, setDisciplinas ] = useState([
-
-        {
-            nome: 'xesque',
-            horario: [
-                {
-                    dia: 'Seg',
-                    inicio: '14',
-                    fim: '16'
-                },
-                {
-                    dia: 'Qua',
-                    inicio: '16',
-                    fim: '18'
-                }
-            ]
-        },
-        {
-            nome: 'Fisica Experimental',
-            horario: [
-                {
-                    dia: 'Seg',
-                    inicio: '14',
-                    fim: '16'
-                },
-                {
-                    dia: 'Qua',
-                    inicio: '16',
-                    fim: '18'
-                }
-            ]
-        },
-        {
-            nome: 'Fisica II',
-            horario: [
-                {
-                    dia: 'Seg',
-                    inicio: '14',
-                    fim: '16'
-                },
-                {
-                    dia: 'Qua',
-                    inicio: '16',
-                    fim: '18'
-                }
-            ]
-        },
-        {
-            nome: 'Cálculo II',
-            horario: [
-                {
-                    dia: 'Seg',
-                    inicio: '14',
-                    fim: '16'
-                },
-                {
-                    dia: 'Qua',
-                    inicio: '16',
-                    fim: '18'
-                }
-            ]
-        },
-        {
-            nome: 'xesque',
-            horario: [
-                {
-                    dia: 'Seg',
-                    inicio: '14',
-                    fim: '16'
-                },
-                {
-                    dia: 'Qua',
-                    inicio: '16',
-                    fim: '18'
-                }
-            ]
-        },
-        {
-            nome: 'Fisica Experimental',
-            horario: [
-                {
-                    dia: 'Seg',
-                    inicio: '14',
-                    fim: '16'
-                },
-                {
-                    dia: 'Qua',
-                    inicio: '16',
-                    fim: '18'
-                }
-            ]
-        },
         {
             nome: 'Fisica II',
             horario: [
@@ -120,8 +29,13 @@ export function DisciplinasProvider({ children }) {
     ]) /* lista de objetos */
 
     function adicionarDisciplina(jsonDisciplinaNova) {
-        let novoArrayDiscplinas = disciplinas
-        novoArrayDiscplinas.push(jsonDisciplinaNova)
+        let novoArrayDiscplinas = Array.from(disciplinas)
+        let novoJsonDisciplinaNova = {
+            key: novoArrayDiscplinas.length,
+            nome: jsonDisciplinaNova.nome,
+            horario: jsonDisciplinaNova.horario
+        }
+        novoArrayDiscplinas.push(novoJsonDisciplinaNova)
         setDisciplinas(novoArrayDiscplinas)
     }
 

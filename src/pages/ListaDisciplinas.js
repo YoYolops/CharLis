@@ -4,7 +4,7 @@ import { StyleSheet, Text, View, ScrollView, Pressable } from 'react-native';
 import DisciplinasContext from '../components/context/DisciplinasContext'
 import Footer from '../components/footer';
 
-function Disciplinas({ navigation }) {
+function ListaDisciplinas({ navigation }) {
     const { disciplinas, colors, darkModeActive } = useContext(DisciplinasContext)
     return (
         <>
@@ -16,7 +16,7 @@ function Disciplinas({ navigation }) {
             ]}>
                 {disciplinas.map(disciplina => {
                     return (
-                        <Pressable key={disciplina.nome} style={({ pressed }) => [
+                        <Pressable key={disciplina.key} style={({ pressed }) => [
                             {
                                 backgroundColor: pressed
                                 ? 'rgba(29, 185, 84, 0.5)'
@@ -88,4 +88,4 @@ const styles = StyleSheet.create({
     }
 })
 
-export default Disciplinas;
+export default ListaDisciplinas;
