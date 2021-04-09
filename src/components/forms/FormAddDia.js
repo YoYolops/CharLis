@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react';
-import { View, TextInput, Pressable, Text, StyleSheet, Button } from 'react-native';
+import { View, Text, StyleSheet, Button } from 'react-native';
 
 import { Picker } from '@react-native-picker/picker';
 import DisciplinasContext from '../context/DisciplinasContext';

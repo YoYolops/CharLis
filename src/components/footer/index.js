@@ -37,7 +37,7 @@ function Footer(props) {
                 styles.addIconContainer
             ]
             }
-            onPress={() => props.navegacao.navigate('Cadastrar Disciplina')}>
+            onPress={() => props.navegacao.navigate('CadastrarDisciplina')}>
                 <AntDesign name="pluscircleo" size={40} style={styles.addIcon} />
             </Pressable>
         </View>

@@ -4,6 +4,7 @@ import { View, TextInput, Pressable, Text, StyleSheet, Button } from 'react-nati
 import DisciplinasContext from '../context/DisciplinasContext';
 import FormAddDia from './FormAddDia';
 import Entypo from 'react-native-vector-icons/Entypo';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 import { ScrollView } from 'react-native-gesture-handler';
 
 function FormAddDisciplina() {
@@ -47,7 +48,7 @@ function FormAddDisciplina() {
         <>
             <ScrollView style={[
                     {
-                        backgroundColor: darkModeActive ? "#191919" : "#fff"
+                        backgroundColor: darkModeActive ? colors.blackDefault : "#fff"
                     },
                     styles.formAddDisiplinaContainer]}>
                 <Text style={[
@@ -73,12 +74,12 @@ function FormAddDisciplina() {
                     }
                     <View style={styles.scheduleButtonContainer}>
                         <Pressable onPress={removeDia} style={styles.removeScheduleButton} android_ripple={{color: 'rgb(29, 185, 84)', radius: 0}}>
-                            <Entypo name="add-to-list" size={20} />
-                            <Text style={styles.insertScheduleButtonText}>Remover Dia</Text>
+                            <MaterialCommunityIcons name="tray-remove" size={20} color="#b91d1d" />
+                            <Text style={{ ...styles.removeScheduleButtonText, color: darkModeActive ? colors.redDefault : colors.blackDefault }}>Remover Dia</Text>
                         </Pressable>
                         <Pressable onPress={addDia} style={styles.insertScheduleButton} android_ripple={{color: 'rgb(29, 185, 84)', radius: 0}}>
-                            <Entypo name="add-to-list" size={20} />
-                            <Text style={styles.insertScheduleButtonText}>Adicionar Dia</Text>
+                            <Entypo name="add-to-list" size={20} color="#1db954" />
+                            <Text style={{ ...styles.insertScheduleButtonText, color: darkModeActive ? colors.greenDefault : colors.blackDefault }}>Adicionar Dia</Text>
                         </Pressable>
                     </View>
                 </View>
@@ -143,7 +144,10 @@ const styles = StyleSheet.create({
         borderRadius: 5
     },
     insertScheduleButtonText: {
-        marginLeft: 5
+        marginLeft: 5,
+    },
+    removeScheduleButtonText: {
+        marginLeft: 5,
     }
 })
 

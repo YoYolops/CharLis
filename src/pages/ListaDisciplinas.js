@@ -16,7 +16,7 @@ function ListaDisciplinas({ navigation }) {
             ]}>
                 {disciplinas.map(disciplina => {
                     return (
-                        <Pressable key={disciplina.key} style={({ pressed }) => [
+                        <Pressable key={disciplina.key.toString()} style={({ pressed }) => [
                             {
                                 backgroundColor: pressed
                                 ? 'rgba(29, 185, 84, 0.5)'
@@ -24,11 +24,16 @@ function ListaDisciplinas({ navigation }) {
                             },
                             darkModeActive ? styles.disciplinaCadastradaDark : styles.disciplinaCadastradaLight
                         ]
-                        }>
+                        }
+                        onPress={() => {navigation.navigate("DisciplinaTemplate", {
+                            title: disciplina.nome,
+                            horario: disciplina.horario
+                        })}}
+                        >
                             <Text style={styles.nomeDisciplina}>{disciplina.nome}</Text>
                             <View style={styles.horarioDisciplinaContainer}>{disciplina.horario.map( dia => {
                                 return (
-                                    <Text style={styles.horarioDisciplina}>
+                                    <Text key={disciplina.key.toString()} style={styles.horarioDisciplina}>
                                         {dia.dia}
                                     </Text>
                                 )
