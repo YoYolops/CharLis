@@ -27,7 +27,8 @@ function ListaDisciplinas({ navigation }) {
                         }
                         onPress={() => {navigation.navigate("DisciplinaTemplate", {
                             title: disciplina.nome,
-                            horario: disciplina.horario
+                            horario: disciplina.horario,
+                            key: disciplina.key
                         })}}
                         >
                             <Text style={styles.nomeDisciplina}>{disciplina.nome}</Text>

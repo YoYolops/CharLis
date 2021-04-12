@@ -30,10 +30,25 @@ export function DisciplinasProvider({ children }) {
         let novoJsonDisciplinaNova = {
             key: novoArrayDiscplinas.length,
             nome: jsonDisciplinaNova.nome,
-            horario: jsonDisciplinaNova.horario
+            horario: jsonDisciplinaNova.horario,
+            documentos: []
         }
         novoArrayDiscplinas.push(novoJsonDisciplinaNova)
         await AsyncStorage.setItem('@CharLis:disciplinas', JSON.stringify({ disciplinas: novoArrayDiscplinas }))
+        setDisciplinas(novoArrayDiscplinas)
+    }
+
+    async function updateDisciplinas(indexDaDisciplina, newDocumentsArray) {
+        const novoArrayDiscplinas = Array.from(disciplinas)
+        const objetoDisciplina = novoArrayDiscplinas[indexDaDisciplina]
+        const novoObjetoDisciplina = {
+            key: objetoDisciplina.key,
+            nome: objetoDisciplina.nome,
+            horario: objetoDisciplina.horario,
+            documentos: newDocumentsArray
+        }
+        novoArrayDiscplinas.splice(indexDaDisciplina, 1, novoObjetoDisciplina)
+        await AsyncStorage.setItem('@CharLis:disciplinas', JSON.stringify({disciplinas: novoArrayDiscplinas}))
         setDisciplinas(novoArrayDiscplinas)
     }
 
@@ -48,7 +63,8 @@ export function DisciplinasProvider({ children }) {
                 adicionarDisciplina,
                 darkModeActive,
                 switchDarkMode,
-                colors
+                colors,
+                updateDisciplinas
             }}
         >
             {children}

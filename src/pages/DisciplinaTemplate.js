@@ -3,30 +3,45 @@ import { ScrollView, View, Text, StyleSheet, Pressable } from 'react-native';
 import * as DocumentPicker from 'expo-document-picker';
 
 import DisciplinasContext from '../components/context/DisciplinasContext';
+import { useEffect } from 'react';
 
 function DisciplinasTemplate({ route }) {
-    const { title, horario } = route.params
-    const [ documents, setDocuments ] = useState([])
+    const { horario, key } = route.params
+    const { updateDisciplinas, disciplinas } = useContext(DisciplinasContext)
+    const [ documents, setDocuments ] = useState(disciplinas[key].documentos)
+
+    useEffect(() => {
+        console.log('noveau')
+        console.log(disciplinas[key].documentos)
+    })
 
     async function pickDocumentHandler() {
         const documentInfo = await DocumentPicker.getDocumentAsync({
-            copyToCacheDirectory: false,
-            multiple: true
+            copyToCacheDirectory: false
         })
+        const documentData = {
+            type: 'text',
+            name: documentInfo.name,
+            uri: documentInfo.uri
+        }
         const newDocumentsArray = Array.from(documents)
-        newDocumentsArray.push(documentInfo)
-        setDocuments(newDocumentsArray)
+        newDocumentsArray.push(documentData)
+        updateDisciplinas(key, newDocumentsArray)
         console.log(newDocumentsArray)
     }
     async function pickImageHandler() {
         const documentInfo = await DocumentPicker.getDocumentAsync({
             type: 'image/*',
-            copyToCacheDirectory: false,
-            multiple: true
+            copyToCacheDirectory: false
         })
+        const documentData = {
+            type: 'image',
+            name: documentInfo.name,
+            uri: documentInfo.uri
+        }
         const newDocumentsArray = Array.from(documents)
-        newDocumentsArray.push(documentInfo)
-        setDocuments(newDocumentsArray)
+        newDocumentsArray.push(documentData)
+        updateDisciplinas(key, newDocumentsArray)
         console.log(newDocumentsArray)
     }
 
