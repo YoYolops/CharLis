@@ -23,7 +23,7 @@ export function DisciplinasProvider({ children }) {
             }
         }
         loadStoragedDisciplinasData()
-    })
+    }, [])
 
     async function adicionarDisciplina(jsonDisciplinaNova) {
         let novoArrayDiscplinas = Array.from(disciplinas)

@@ -33,7 +33,7 @@ function ListaDisciplinas({ navigation }) {
                             <Text style={styles.nomeDisciplina}>{disciplina.nome}</Text>
                             <View style={styles.horarioDisciplinaContainer}>{disciplina.horario.map( dia => {
                                 return (
-                                    <Text key={disciplina.key.toString()} style={styles.horarioDisciplina}>
+                                    <Text key={dia.dia} style={styles.horarioDisciplina}>
                                         {dia.dia}
                                     </Text>
                                 )
