@@ -11,38 +11,22 @@ function DisciplinasTemplate({ route }) {
     const [ documents, setDocuments ] = useState(disciplinas[key].documentos)
 
     useEffect(() => {
-        console.log('noveau')
-        console.log(disciplinas[key].documentos)
-    })
+        setDocuments(disciplinas[key].documentos)
+    }, [disciplinas])
 
     async function pickDocumentHandler() {
         const documentInfo = await DocumentPicker.getDocumentAsync({
             copyToCacheDirectory: false
         })
         const documentData = {
-            type: 'text',
             name: documentInfo.name,
             uri: documentInfo.uri
         }
         const newDocumentsArray = Array.from(documents)
         newDocumentsArray.push(documentData)
+        //console.log('array novo:')
+        //console.log(newDocumentsArray)
         updateDisciplinas(key, newDocumentsArray)
-        console.log(newDocumentsArray)
-    }
-    async function pickImageHandler() {
-        const documentInfo = await DocumentPicker.getDocumentAsync({
-            type: 'image/*',
-            copyToCacheDirectory: false
-        })
-        const documentData = {
-            type: 'image',
-            name: documentInfo.name,
-            uri: documentInfo.uri
-        }
-        const newDocumentsArray = Array.from(documents)
-        newDocumentsArray.push(documentData)
-        updateDisciplinas(key, newDocumentsArray)
-        console.log(newDocumentsArray)
     }
 
     return (
@@ -62,10 +46,14 @@ function DisciplinasTemplate({ route }) {
                     }
                 </View>
             </View>
+            <View>{
+                documents.map((arquivo, index) => {
+                    return (
+                        <Text key={index}>{arquivo.name}</Text>
+                    )
+                })}
+            </View>
             <View style={styles.buttonsContainer}>
-                <Pressable onPress={pickImageHandler} style={styles.importImageButton}>
-                    <Text style={styles.importButtonImageText}>IMPORTAR IMAGEM</Text>
-                </Pressable>
                 <Pressable onPress={pickDocumentHandler} style={styles.importDocumentButton}>
                     <Text style={styles.importButtonDocumentText}>IMPORTAR DOCUMENTO</Text>
                 </Pressable>
@@ -110,15 +98,6 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center'
     },
-    importImageButton: {
-        width: 240,
-        height: 32,
-        backgroundColor: "#1db954",
-        justifyContent: 'center',
-        alignItems: 'center',
-        borderRadius: 5,
-        marginBottom: 10,
-    },
     importDocumentButton: {
         borderRadius: 5,
         borderColor: "#1db954",
@@ -127,9 +106,6 @@ const styles = StyleSheet.create({
         height: 32,
         justifyContent: 'center',
         alignItems: 'center',
-    },
-    importButtonImageText: {
-        color: '#fff'
     },
     importButtonDocumentText: {
         color: "#1db954"

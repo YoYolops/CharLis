@@ -14,6 +14,7 @@ export function DisciplinasProvider({ children }) {
     const [ disciplinas, setDisciplinas ] = useState([]) /* lista de objetos */
 
     useEffect(() => {
+        
         async function loadStoragedDisciplinasData() {
             const storagedDisciplinaData = await AsyncStorage.getItem('@CharLis:disciplinas');
 
@@ -39,17 +40,24 @@ export function DisciplinasProvider({ children }) {
     }
 
     async function updateDisciplinas(indexDaDisciplina, newDocumentsArray) {
-        const novoArrayDiscplinas = Array.from(disciplinas)
-        const objetoDisciplina = novoArrayDiscplinas[indexDaDisciplina]
+        const novoArrayDisciplinas = Array.from(disciplinas)
+        const objetoDisciplina = novoArrayDisciplinas[indexDaDisciplina]
         const novoObjetoDisciplina = {
             key: objetoDisciplina.key,
             nome: objetoDisciplina.nome,
             horario: objetoDisciplina.horario,
             documentos: newDocumentsArray
         }
-        novoArrayDiscplinas.splice(indexDaDisciplina, 1, novoObjetoDisciplina)
-        await AsyncStorage.setItem('@CharLis:disciplinas', JSON.stringify({disciplinas: novoArrayDiscplinas}))
-        setDisciplinas(novoArrayDiscplinas)
+        novoArrayDisciplinas.splice(indexDaDisciplina, 1, novoObjetoDisciplina)
+        await AsyncStorage.setItem('@CharLis:disciplinas', JSON.stringify({disciplinas: novoArrayDisciplinas}))
+        setDisciplinas(novoArrayDisciplinas)
+    }
+
+    async function removeDisciplina(indexDeRemocao) {
+        const novoArrayDisciplinas = Array.from(disciplinas)
+        novoArrayDisciplinas.splice(indexDeRemocao, 1)
+        await AsyncStorage.setItem('@CharLis:disciplinas', JSON.stringify({disciplinas: novoArrayDisciplinas}))
+        setDisciplinas(novoArrayDisciplinas)
     }
 
     function switchDarkMode() {
@@ -61,10 +69,11 @@ export function DisciplinasProvider({ children }) {
             value={{
                 disciplinas,
                 adicionarDisciplina,
+                updateDisciplinas,
+                removeDisciplina,
                 darkModeActive,
                 switchDarkMode,
                 colors,
-                updateDisciplinas
             }}
         >
             {children}

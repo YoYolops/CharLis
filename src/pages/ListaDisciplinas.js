@@ -1,11 +1,14 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { StyleSheet, Text, View, ScrollView, Pressable } from 'react-native';
+import FontAwesome from 'react-native-vector-icons/FontAwesome'
 
 import DisciplinasContext from '../components/context/DisciplinasContext'
 import Footer from '../components/footer';
 
 function ListaDisciplinas({ navigation }) {
-    const { disciplinas, colors, darkModeActive } = useContext(DisciplinasContext)
+    const { disciplinas, colors, darkModeActive, removeDisciplina } = useContext(DisciplinasContext)
+    const [ removalMode, setRemovalMode ] = useState(false)
+
     return (
         <>
             <ScrollView style={[
@@ -23,22 +26,29 @@ function ListaDisciplinas({ navigation }) {
                                 : darkModeActive ? colors.blackDefault : colors.lightDefault,
                             },
                             darkModeActive ? styles.disciplinaCadastradaDark : styles.disciplinaCadastradaLight
-                        ]
-                        }
-                        onPress={() => {navigation.navigate("DisciplinaTemplate", {
-                            title: disciplina.nome,
-                            horario: disciplina.horario,
-                            key: disciplina.key
+                        ]}
+                        onPress={() => {
+                            removalMode ? setRemovalMode(false) : void(0)
+                            navigation.navigate("DisciplinaTemplate", {
+                                title: disciplina.nome,
+                                horario: disciplina.horario,
+                                key: disciplina.key
                         })}}
-                        >
+                        onLongPress={() => {
+                            setRemovalMode(!removalMode)
+                        }}>
                             <Text style={styles.nomeDisciplina}>{disciplina.nome}</Text>
                             <View style={styles.horarioDisciplinaContainer}>{disciplina.horario.map( dia => {
                                 return (
-                                    <Text key={dia.dia} style={styles.horarioDisciplina}>
-                                        {dia.dia}
-                                    </Text>
+                                    <View key={dia.dia} style={styles.horarioDisciplina }>
+                                        <Text style={removalMode ? {display: 'none'} : {color: '#1db954'}}>{dia.dia}</Text>
+                                        <Pressable onPress={() => {removeDisciplina(disciplina.key)}} style={removalMode ? styles.removalClickRegion : {display: 'none'}}>
+                                            <FontAwesome name="remove" size={28} style={{color: colors.redDefault}}/>
+                                        </Pressable>
+                                    </View>
                                 )
-                            })}</View>
+                            })}
+                            </View>
                         </Pressable>
                     )
                 })}
@@ -49,6 +59,9 @@ function ListaDisciplinas({ navigation }) {
 }
 
 const styles = StyleSheet.create({
+    invisible: {
+        display: 'none'
+    },
     containerDisciplinas: {
         height: '100%',
     },
