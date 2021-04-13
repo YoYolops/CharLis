@@ -1,6 +1,7 @@
 import React, { useContext, useState } from 'react';
 import { StyleSheet, Text, View, ScrollView, Pressable } from 'react-native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome'
+function oi(){}
 
 import DisciplinasContext from '../components/context/DisciplinasContext'
 import Footer from '../components/footer';
