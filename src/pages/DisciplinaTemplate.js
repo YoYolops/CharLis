@@ -1,20 +1,53 @@
-import React, { useContext, useState } from 'react';
-import { ScrollView, View, Text, StyleSheet, Pressable } from 'react-native';
+import React, { useContext, useState, useEffect } from 'react';
+import { ScrollView, View, Text, StyleSheet, Pressable, Image, Modal } from 'react-native';
 import * as DocumentPicker from 'expo-document-picker';
+import ImageViewer from 'react-native-image-zoom-viewer';
 
 import DisciplinasContext from '../components/context/DisciplinasContext';
-import { useEffect } from 'react';
 
 function DisciplinasTemplate({ route }) {
     const { horario, key } = route.params
     const { updateDisciplinas, disciplinas } = useContext(DisciplinasContext)
     const [ documents, setDocuments ] = useState(disciplinas[key].documentos)
+    const [ images, setImages ] = useState([])
+    const [ modalVisible, setModalVisible ] = useState(false)
+    const [ modalInitialIndex, setModalInitialIndex ] = useState(0)
+
+    function isImage(fileName) {
+        //verifica se o nome do arquivo possui extenção de imagem, retorna true em caso afirmativo
+        const lastro = ['.jpg', ".png", ".jpeg", ".bmp", ".gif", ".webp"]
+
+        for (let i = 0; i < lastro.length; i++) {
+            if (fileName.indexOf(lastro[i]) !== -1) {
+                return true
+            }
+        } return false
+    }
 
     useEffect(() => {
+        let newImages = [];
+
+        disciplinas[key].documentos.forEach(document => {
+            if (isImage(document.name)) {
+                newImages.push({
+                    url: '',
+                    width: 360,
+                    height: 480,
+                    props: {
+                        source: {uri: document.uri},
+                        resizeMode: 'contain'
+                    }
+                })
+            }
+        })
+        setImages(newImages)
         setDocuments(disciplinas[key].documentos)
     }, [disciplinas])
 
+
     async function pickDocumentHandler() {
+        // abre o seletor de documentos e adiciona o documento selecionado aos dados permanentes do app
+
         const documentInfo = await DocumentPicker.getDocumentAsync({
             copyToCacheDirectory: false
         })
@@ -28,6 +61,7 @@ function DisciplinasTemplate({ route }) {
         //console.log(newDocumentsArray)
         updateDisciplinas(key, newDocumentsArray)
     }
+
 
     return (
         <ScrollView style={styles.disciplinasTemplateContainer}>
@@ -46,12 +80,25 @@ function DisciplinasTemplate({ route }) {
                     }
                 </View>
             </View>
-            <View>{
-                documents.map((arquivo, index) => {
-                    return (
-                        <Text key={index}>{arquivo.name}</Text>
-                    )
-                })}
+            <View style={styles.imagesContainer}>
+                <View style={styles.staticImages}>{
+                    images.map((image, index) => {
+                        return (
+                            <Pressable key={index} onPress={() => {
+                                setModalInitialIndex(index)
+                                setModalVisible(true)}}>
+                                <Image style={{width: 220, height: 280}} source={image.props.source}/> 
+                            </Pressable>
+                        )
+                    })
+                }
+                </View>
+                <Modal visible={modalVisible} animationType='slide' presentationStyle='fullScreen'>
+                    <ImageViewer index={modalInitialIndex} onCancel={() => {setModalVisible(false)}} enableSwipeDown={true} onSwipeDown={() => {setModalVisible(false)}} imageUrls={images}/>
+                </Modal>
+            </View>
+            <View style={styles.documentsContainer}>
+
             </View>
             <View style={styles.buttonsContainer}>
                 <Pressable onPress={pickDocumentHandler} style={styles.importDocumentButton}>
