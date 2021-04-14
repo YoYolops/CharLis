@@ -66,7 +66,7 @@ function DisciplinasTemplate({ route }) {
     return (
         <ScrollView style={styles.disciplinasTemplateContainer}>
             <View style={styles.horarioContainer}>
-                <Text style={styles.horarioHeader}>Horário: </Text>
+                <Text style={styles.textHeader}>Horário: </Text>
                 <View style={styles.horarioContent}>
                     {
                         horario.map(dia => {
@@ -81,13 +81,14 @@ function DisciplinasTemplate({ route }) {
                 </View>
             </View>
             <View style={styles.imagesContainer}>
-                <View style={styles.staticImages}>{
+                <Text style={styles.textHeader}>Imagens: </Text>
+                <View style={styles.staticImagesContent}>{
                     images.map((image, index) => {
                         return (
                             <Pressable key={index} onPress={() => {
                                 setModalInitialIndex(index)
                                 setModalVisible(true)}}>
-                                <Image style={{width: 220, height: 280}} source={image.props.source}/> 
+                                <Image style={styles.staticImages} source={image.props.source}/> 
                             </Pressable>
                         )
                     })
@@ -98,11 +99,11 @@ function DisciplinasTemplate({ route }) {
                 </Modal>
             </View>
             <View style={styles.documentsContainer}>
-
+                <Text style={styles.textHeader}>Documentos: </Text>
             </View>
             <View style={styles.buttonsContainer}>
-                <Pressable onPress={pickDocumentHandler} style={styles.importDocumentButton}>
-                    <Text style={styles.importButtonDocumentText}>IMPORTAR DOCUMENTO</Text>
+                <Pressable onPress={pickDocumentHandler} style={styles.importDocumentButton} android_ripple={{color: "#1db954"}}>
+                    <Text style={styles.importButtonDocumentText}>IMPORTAR ARQUIVO</Text>
                 </Pressable>
             </View>
         </ScrollView>
@@ -119,7 +120,7 @@ const styles = StyleSheet.create({
         borderBottomWidth: 2,
         borderBottomColor: "#1db954",
     },
-    horarioHeader: {
+    textHeader: {
         margin: 10,
         fontSize: 20,
         fontWeight: 'bold',
@@ -127,6 +128,29 @@ const styles = StyleSheet.create({
     },
     horarioContent: {
         margin: 10
+    },
+    imagesContainer: {
+        borderBottomWidth: 2,
+        borderBottomColor: "#1db954"
+    },
+    staticImagesContent: {
+        display: 'flex',
+        flex: 1,
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+        margin: 10,
+        marginLeft: 20,
+        marginRight: 20
+    },
+    staticImages: {
+        width: 124,
+        height: 124,
+        borderRadius: 5,
+        margin: 5,
+        borderColor: "#1db954",
+        borderWidth: 2,
     },
     blocoDia: {
         borderLeftColor: "#1db954",
