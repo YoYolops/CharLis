@@ -96,7 +96,6 @@ const styles = StyleSheet.create({
         margin: 10,
         fontSize: 20,
         color: '#1db954',
-
     },
     horarioDisciplinaContainer: {
         margin: 10,

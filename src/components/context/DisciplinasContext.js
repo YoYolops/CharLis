@@ -7,7 +7,7 @@ export function DisciplinasProvider({ children }) {
     const colors = {
         greenDefault: "#1db954",
         blackDefault: "#1c1c1c",
-        lightDefault: "#f2f2f2",
+        lightDefault: "#ddd",
         redDefault: "#b91d1d",
     }
     const [ darkModeActive, setDarkModeActive ] = useState(false)

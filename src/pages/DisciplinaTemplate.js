@@ -1,6 +1,5 @@
 import React, { useContext, useState, useEffect } from 'react';
 import { ScrollView, View, Text, StyleSheet, Pressable, Image, Modal } from 'react-native';
-import * as FileSystem from 'expo-file-system';
 import * as IntentLauncher from 'expo-intent-launcher';
 import * as DocumentPicker from 'expo-document-picker';
 import ImageViewer from 'react-native-image-zoom-viewer';
@@ -9,7 +8,7 @@ import DisciplinasContext from '../components/context/DisciplinasContext';
 
 function DisciplinasTemplate({ route }) {
     const { horario, key } = route.params
-    const { updateDisciplinas, disciplinas } = useContext(DisciplinasContext)
+    const { updateDisciplinas, disciplinas, darkModeActive, colors } = useContext(DisciplinasContext)
     const [ documents, setDocuments ] = useState(disciplinas[key].documentos)
     const [ files, setFiles ] = useState({images: [], documents: []})
     const [ modalVisible, setModalVisible ] = useState(false)
@@ -69,7 +68,12 @@ function DisciplinasTemplate({ route }) {
 
 
     return (
-        <ScrollView style={styles.disciplinasTemplateContainer}>
+        <ScrollView style={[
+                {
+                    backgroundColor: darkModeActive ? colors.blackDefault : '#ddd'
+                },
+                styles.disciplinasTemplateContainer
+            ]}>
             <View style={styles.horarioContainer}>
                 <Text style={styles.textHeader}>Horário: </Text>
                 <View style={styles.horarioContent}>
@@ -77,8 +81,8 @@ function DisciplinasTemplate({ route }) {
                         horario.map(dia => {
                             return (
                                 <View key={dia.dia} style={styles.blocoDia}>
-                                    <Text style={styles.blocoDiaText}>{dia.dia}</Text>
-                                    <Text style={styles.blocoDiaText}>{`${dia.inicio} - ${dia.fim}`}</Text>
+                                    <Text style={[{color: darkModeActive ? '#ddd' : colors.blackDefault},styles.blocoDiaText]}>{dia.dia}</Text>
+                                    <Text style={[{color: darkModeActive ? '#ddd' : colors.blackDefault},styles.blocoDiaText]}>{`${dia.inicio} - ${dia.fim}`}</Text>
                                 </View>
                             )
                         })
@@ -90,7 +94,7 @@ function DisciplinasTemplate({ route }) {
                 <View style={styles.staticImagesContent}>{
                     files.images.map((image, index) => {
                         return (
-                            <Pressable key={index} onPress={() => {
+                            <Pressable style={styles.imageHolder} key={index} onPress={() => {
                                 setModalInitialIndex(index)
                                 setModalVisible(true)}}>
                                 <Image style={styles.staticImages} source={image.props.source}/> 
@@ -115,7 +119,7 @@ function DisciplinasTemplate({ route }) {
                                         flags: 1,
                                      });
                                 }}>
-                                    <Text style={styles.documentsTitles}>{document.name}</Text>
+                                    <Text style={[{color: darkModeActive ? '#ddd' : colors.blackDefault},styles.documentsTitles]}>{document.name}</Text>
                                 </Pressable>
                             )
                         })
@@ -133,7 +137,6 @@ function DisciplinasTemplate({ route }) {
                                    
 const styles = StyleSheet.create({
     disciplinasTemplateContainer: {
-        backgroundColor: "#f2f2f2",
         borderLeftWidth: 3,
         borderLeftColor: "#1db954"
     },
@@ -154,6 +157,14 @@ const styles = StyleSheet.create({
         borderBottomWidth: 2,
         borderBottomColor: "#1db954"
     },
+    imageHolder: {
+        margin: 5,
+        borderLeftWidth: 3,
+        borderLeftColor: "#1db954",
+        borderRadius: 5,
+        borderBottomWidth: 1,
+        borderBottomColor: "#1db954"
+    },
     staticImagesContent: {
         display: 'flex',
         flex: 1,
@@ -169,9 +180,6 @@ const styles = StyleSheet.create({
         width: 124,
         height: 124,
         borderRadius: 5,
-        margin: 5,
-        borderColor: "#1db954",
-        borderWidth: 2,
     },
     blocoDia: {
         borderLeftColor: "#1db954",
@@ -180,7 +188,7 @@ const styles = StyleSheet.create({
         marginBottom: 5
     },
     blocoDiaText: {
-        marginLeft: 5,
+        marginLeft: 10,
         marginBottom: 2,
         fontSize: 14
     },
@@ -193,7 +201,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center'
     },
     documentsTitles: {
-        marginLeft: 5
+        marginLeft: 10,
     },
     buttonsContainer: {
         margin: 10,

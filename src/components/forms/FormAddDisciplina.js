@@ -7,7 +7,7 @@ import Entypo from 'react-native-vector-icons/Entypo';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 import { ScrollView } from 'react-native-gesture-handler';
 
-function FormAddDisciplina() {
+function FormAddDisciplina({ navigation }) {
     const { darkModeActive, colors, adicionarDisciplina } = useContext(DisciplinasContext)
 
     const [ nome, setNome ] = useState(null);
@@ -22,7 +22,7 @@ function FormAddDisciplina() {
         novoArray.splice(-1)
         setHorario(novoArray)
     }
-
+    
     const [ dias, setDias ] = useState([<FormAddDia key={0} chave={0} adicionarHorario={addHorario} />]) /* pra cada elemento dessa lista, um dia de cadastro será criado */
     function addDia() {
         let novoArray = Array.from(dias)
@@ -42,6 +42,8 @@ function FormAddDisciplina() {
             horario
         }
         adicionarDisciplina(jsonDaDisciplina)
+        navigation.navigate('Disciplinas')
+
     }
 
     return (
@@ -84,7 +86,7 @@ function FormAddDisciplina() {
                     </View>
                 </View>
             </ScrollView>
-            <Button onPress={setarDisciplina} title="Cadastrar" color="rgb(29, 185, 84)" />
+            <Button onPress={setarDisciplina} title="Cadastrar" color="rgb(29, 185, 84)" disabled={!nome || nome.trim() === '' ? true : false}/>
         </>
     )
 }
