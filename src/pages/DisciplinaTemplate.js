@@ -1,5 +1,7 @@
 import React, { useContext, useState, useEffect } from 'react';
 import { ScrollView, View, Text, StyleSheet, Pressable, Image, Modal } from 'react-native';
+import * as FileSystem from 'expo-file-system';
+import * as IntentLauncher from 'expo-intent-launcher';
 import * as DocumentPicker from 'expo-document-picker';
 import ImageViewer from 'react-native-image-zoom-viewer';
 
@@ -9,7 +11,7 @@ function DisciplinasTemplate({ route }) {
     const { horario, key } = route.params
     const { updateDisciplinas, disciplinas } = useContext(DisciplinasContext)
     const [ documents, setDocuments ] = useState(disciplinas[key].documentos)
-    const [ images, setImages ] = useState([])
+    const [ files, setFiles ] = useState({images: [], documents: []})
     const [ modalVisible, setModalVisible ] = useState(false)
     const [ modalInitialIndex, setModalInitialIndex ] = useState(0)
 
@@ -26,6 +28,7 @@ function DisciplinasTemplate({ route }) {
 
     useEffect(() => {
         let newImages = [];
+        let newDocuments = []
 
         disciplinas[key].documentos.forEach(document => {
             if (isImage(document.name)) {
@@ -38,15 +41,17 @@ function DisciplinasTemplate({ route }) {
                         resizeMode: 'contain'
                     }
                 })
+            } else {
+                newDocuments.push(document)
             }
         })
-        setImages(newImages)
+        setFiles({images: newImages, documents: newDocuments})
         setDocuments(disciplinas[key].documentos)
     }, [disciplinas])
 
 
     async function pickDocumentHandler() {
-        // abre o seletor de documentos e adiciona o documento selecionado aos dados permanentes do app
+        // abre o seletor de documentos e adiciona o URI do documento selecionado aos dados permanentes do app
 
         const documentInfo = await DocumentPicker.getDocumentAsync({
             copyToCacheDirectory: false
@@ -83,7 +88,7 @@ function DisciplinasTemplate({ route }) {
             <View style={styles.imagesContainer}>
                 <Text style={styles.textHeader}>Imagens: </Text>
                 <View style={styles.staticImagesContent}>{
-                    images.map((image, index) => {
+                    files.images.map((image, index) => {
                         return (
                             <Pressable key={index} onPress={() => {
                                 setModalInitialIndex(index)
@@ -95,11 +100,27 @@ function DisciplinasTemplate({ route }) {
                 }
                 </View>
                 <Modal visible={modalVisible} animationType='slide' presentationStyle='fullScreen'>
-                    <ImageViewer index={modalInitialIndex} onCancel={() => {setModalVisible(false)}} enableSwipeDown={true} onSwipeDown={() => {setModalVisible(false)}} imageUrls={images}/>
+                    <ImageViewer index={modalInitialIndex} onCancel={() => {setModalVisible(false)}} enableSwipeDown={true} onSwipeDown={() => {setModalVisible(false)}} imageUrls={files.images}/>
                 </Modal>
             </View>
             <View style={styles.documentsContainer}>
                 <Text style={styles.textHeader}>Documentos: </Text>
+                <View>
+                    {
+                        files.documents.map((document, index) => {
+                            return (
+                                <Pressable key={index} style={styles.documentPressable} onPress={ () => {
+                                    IntentLauncher.startActivityAsync('android.intent.action.VIEW', {
+                                        data: document.uri,
+                                        flags: 1,
+                                     });
+                                }}>
+                                    <Text style={styles.documentsTitles}>{document.name}</Text>
+                                </Pressable>
+                            )
+                        })
+                    }
+                </View>
             </View>
             <View style={styles.buttonsContainer}>
                 <Pressable onPress={pickDocumentHandler} style={styles.importDocumentButton} android_ripple={{color: "#1db954"}}>
@@ -162,6 +183,17 @@ const styles = StyleSheet.create({
         marginLeft: 5,
         marginBottom: 2,
         fontSize: 14
+    },
+    documentPressable: {
+        margin: 10,
+        borderLeftWidth:2,
+        borderLeftColor: "#1db954",
+        borderRadius: 5,
+        height: 46,
+        justifyContent: 'center'
+    },
+    documentsTitles: {
+        marginLeft: 5
     },
     buttonsContainer: {
         margin: 10,

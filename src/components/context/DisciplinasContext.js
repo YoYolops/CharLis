@@ -14,7 +14,6 @@ export function DisciplinasProvider({ children }) {
     const [ disciplinas, setDisciplinas ] = useState([]) /* lista de objetos */
 
     useEffect(() => {
-        
         async function loadStoragedDisciplinasData() {
             const storagedDisciplinaData = await AsyncStorage.getItem('@CharLis:disciplinas');
 
