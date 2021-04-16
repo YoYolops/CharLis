@@ -22,6 +22,7 @@ function ListaDisciplinas({ navigation }) {
 
     function interruptRemovalMode() {
         if (removalModeActive) {
+            setRemovalList([])
             setRemovalModeActive(false)
         }
     }
@@ -29,7 +30,7 @@ function ListaDisciplinas({ navigation }) {
     function addRemovalItem(index) {
         let newArrayRemoval = Array.from(removalList)
         newArrayRemoval.push(index)
-        console.log(newArrayRemoval)
+        //console.log(newArrayRemoval)
         setRemovalList(newArrayRemoval.sort((a,b) => a-b))
     }
 
