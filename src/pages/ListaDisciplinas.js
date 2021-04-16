@@ -14,13 +14,22 @@ function ListaDisciplinas({ navigation }, props) {
     function removalModeHandler(listaRemocao) { //função compartilhada com o footer
         if (removalModeActive && listaRemocao.length !== 0) {
             removeDisciplina(listaRemocao)
+            setRemovalList([])
         }
+        //setRemovalList([])
         setRemovalModeActive(!removalModeActive)
     }
 
     function addRemovalItem(index) {
         let newArrayRemoval = Array.from(removalList)
         newArrayRemoval.push(index)
+        console.log(newArrayRemoval)
+        setRemovalList(newArrayRemoval.sort((a,b) => a-b))
+    }
+
+    function removeRemovalItem(index) {
+        let newArrayRemoval = Array.from(removalList)
+        newArrayRemoval.splice(newArrayRemoval.indexOf(index), 1)
         console.log(newArrayRemoval)
         setRemovalList(newArrayRemoval)
     }
@@ -33,9 +42,9 @@ function ListaDisciplinas({ navigation }, props) {
                 },
                 styles.containerDisciplinas
             ]}>
-                {disciplinas.map(disciplina => {
+                {disciplinas.map((disciplina, index) => {
                     return (
-                        <Pressable key={disciplina.key.toString()} style={({ pressed }) => [
+                        <Pressable key={index.toString() + disciplina.name} style={({ pressed }) => [
                             {
                                 backgroundColor: pressed
                                 ? 'rgba(29, 185, 84, 0.5)'
@@ -48,7 +57,7 @@ function ListaDisciplinas({ navigation }, props) {
                             navigation.navigate("DisciplinaTemplate", {
                                 title: disciplina.nome,
                                 horario: disciplina.horario,
-                                key: disciplina.key
+                                key: index
                         })}}>
                             <Text style={styles.nomeDisciplina}>{disciplina.nome}</Text>
                             <View style={styles.horarioDisciplinaContainer}>{disciplina.horario.map( dia => {
@@ -65,7 +74,7 @@ function ListaDisciplinas({ navigation }, props) {
                                 alignItems: 'center',
                                 marginRight: 10
                             }}>
-                                <RemovalBox addRemovalItem={() => {addRemovalItem(disciplina.key)}} removalModeActive={removalModeActive} removalModeHandler={removalModeHandler}/>
+                                <RemovalBox addRemovalItem={() => {addRemovalItem(index)}} removeRemovalItem={() => {removeRemovalItem(index)}} removalModeActive={removalModeActive} removalModeHandler={removalModeHandler}/>
                             </View>
                         </Pressable>
                     )
