@@ -6,7 +6,7 @@ import RemovalBox from '../components/RemovalBox/RemovalBox';
 import DisciplinasContext from '../components/context/DisciplinasContext'
 import Footer from '../components/footer';
 
-function ListaDisciplinas({ navigation }, props) {
+function ListaDisciplinas({ navigation }) {
     const { disciplinas, colors, darkModeActive, removeDisciplina } = useContext(DisciplinasContext)
     const [ removalModeActive, setRemovalModeActive ] = useState(false) //estado compartilhado com o footer
     const [ removalList, setRemovalList ] = useState([])
@@ -18,6 +18,12 @@ function ListaDisciplinas({ navigation }, props) {
         }
         //setRemovalList([])
         setRemovalModeActive(!removalModeActive)
+    }
+
+    function interruptRemovalMode() {
+        if (removalModeActive) {
+            setRemovalModeActive(false)
+        }
     }
 
     function addRemovalItem(index) {
@@ -80,7 +86,7 @@ function ListaDisciplinas({ navigation }, props) {
                     )
                 })}
             </ScrollView>
-            <Footer removalModeActive={removalModeActive} removalModeHandler={() => removalModeHandler(removalList)} navegacao={navigation}/>
+            <Footer interruptRemovalMode={interruptRemovalMode} removalModeActive={removalModeActive} removalModeHandler={() => removalModeHandler(removalList)} navegacao={navigation}/>
         </>
     )
 }

@@ -33,7 +33,7 @@ function Footer(props) {
                 }} />
             </Pressable>
 
-            <Pressable style={styles.addIconContainer} onPress={() => props.navegacao.navigate('CadastrarDisciplina')} android_ripple={{ color: '#1d8c45', borderless: true }}>
+            <Pressable style={styles.addIconContainer} onPress={() => {props.interruptRemovalMode(); props.navegacao.navigate('CadastrarDisciplina')}} android_ripple={{ color: '#1d8c45', borderless: true }}>
                 <AntDesign name="pluscircleo" size={40} style={{
                     color: darkModeActive ? '#1db954' : '#ddd',
                     borderRadius: 20,
