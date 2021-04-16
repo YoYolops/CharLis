@@ -1,10 +1,10 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { StyleSheet, Pressable, View } from 'react-native';
 
 import DisciplinasContext from '../context/DisciplinasContext';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import Ionicons from 'react-native-vector-icons/Ionicons';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
 function Footer(props) {
     const { colors, darkModeActive, switchDarkMode } = useContext(DisciplinasContext)
@@ -25,8 +25,8 @@ function Footer(props) {
                 }} />
             </Pressable>
 
-            <Pressable style={styles.addIconContainer} android_ripple={{ color: colors.redDefault, borderless: true }}>
-                <Ionicons name="remove-circle-outline" size={40} style={{
+            <Pressable style={styles.addIconContainer} onPress={props.removalModeHandler} android_ripple={{ color: colors.redDefault, borderless: true }}>
+                <MaterialIcons name={props.removalModeActive ? "highlight-remove" : "remove-circle-outline"} size={40} style={{
                     color: '#b91d1d',
                     borderRadius: 20,
                     backgroundColor: 'rgba(0,0,0,0)'
@@ -55,7 +55,6 @@ const styles = StyleSheet.create({
     addIconContainer: {
         justifyContent: 'center',
         alignItems: 'center',
-        position: 'relative',
         width: 40,
         height: 40,
         right: 0,

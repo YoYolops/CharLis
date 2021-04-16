@@ -50,7 +50,7 @@ function FormAddDisciplina({ navigation }) {
         <>
             <ScrollView style={[
                     {
-                        backgroundColor: darkModeActive ? colors.blackDefault : "#fff"
+                        backgroundColor: darkModeActive ? colors.blackDefault : "#ddd"
                     },
                     styles.formAddDisiplinaContainer]}>
                 <Text style={[

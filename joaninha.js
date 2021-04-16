@@ -1,4 +1,8 @@
-const l1 = {nome: 'yoyo', sobrenome: 'lopes'}
-const l2 = {zeca: 'ruela', ...l1}
+let lista = []
 
-console.log(l2)
+for (let i=0; i < 10; i++) {
+    lista.push(i)
+}
+
+let indexRemocao = [0, 1, 2]
+console.log(lista)

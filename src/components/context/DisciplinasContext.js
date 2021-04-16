@@ -52,9 +52,11 @@ export function DisciplinasProvider({ children }) {
         setDisciplinas(novoArrayDisciplinas)
     }
 
-    async function removeDisciplina(indexDeRemocao) {
+    async function removeDisciplina(listaIndexesDeRemocao) {
         const novoArrayDisciplinas = Array.from(disciplinas)
-        novoArrayDisciplinas.splice(indexDeRemocao, 1)
+        for (let i = 0; i < listaIndexesDeRemocao.length; i++) {
+            novoArrayDisciplinas.splice(listaIndexesDeRemocao[i], 1)
+        }
         await AsyncStorage.setItem('@CharLis:disciplinas', JSON.stringify({disciplinas: novoArrayDisciplinas}))
         setDisciplinas(novoArrayDisciplinas)
     }

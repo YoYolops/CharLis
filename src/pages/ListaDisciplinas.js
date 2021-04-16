@@ -1,13 +1,29 @@
 import React, { useContext, useState } from 'react';
 import { StyleSheet, Text, View, ScrollView, Pressable } from 'react-native';
-import FontAwesome from 'react-native-vector-icons/FontAwesome'
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
+import RemovalBox from '../components/RemovalBox/RemovalBox';
 import DisciplinasContext from '../components/context/DisciplinasContext'
 import Footer from '../components/footer';
 
-function ListaDisciplinas({ navigation }) {
+function ListaDisciplinas({ navigation }, props) {
     const { disciplinas, colors, darkModeActive, removeDisciplina } = useContext(DisciplinasContext)
-    const [ removalMode, setRemovalMode ] = useState(false)
+    const [ removalModeActive, setRemovalModeActive ] = useState(false) //estado compartilhado com o footer
+    const [ removalList, setRemovalList ] = useState([])
+
+    function removalModeHandler(listaRemocao) { //função compartilhada com o footer
+        if (removalModeActive && listaRemocao.length !== 0) {
+            removeDisciplina(listaRemocao)
+        }
+        setRemovalModeActive(!removalModeActive)
+    }
+
+    function addRemovalItem(index) {
+        let newArrayRemoval = Array.from(removalList)
+        newArrayRemoval.push(index)
+        console.log(newArrayRemoval)
+        setRemovalList(newArrayRemoval)
+    }
 
     return (
         <>
@@ -28,32 +44,34 @@ function ListaDisciplinas({ navigation }) {
                             darkModeActive ? styles.disciplinaCadastradaDark : styles.disciplinaCadastradaLight
                         ]}
                         onPress={() => {
-                            removalMode ? setRemovalMode(false) : void(0)
+                            removalModeActive ? setRemovalModeActive(false) : void(0)
                             navigation.navigate("DisciplinaTemplate", {
                                 title: disciplina.nome,
                                 horario: disciplina.horario,
                                 key: disciplina.key
-                        })}}
-                        onLongPress={() => {
-                            setRemovalMode(!removalMode)
-                        }}>
+                        })}}>
                             <Text style={styles.nomeDisciplina}>{disciplina.nome}</Text>
                             <View style={styles.horarioDisciplinaContainer}>{disciplina.horario.map( dia => {
                                 return (
                                     <View key={dia.dia} style={styles.horarioDisciplina }>
-                                        <Text style={removalMode ? {display: 'none'} : {color: '#1db954'}}>{dia.dia}</Text>
-                                        <Pressable onPress={() => {removeDisciplina(disciplina.key)}} style={removalMode ? styles.removalClickRegion : {display: 'none'}}>
-                                            <FontAwesome name="remove" size={28} style={{color: colors.redDefault}}/>
-                                        </Pressable>
+                                        <Text style={removalModeActive ? {display: 'none'} : {color: '#1db954'}}>{dia.dia}</Text>
                                     </View>
                                 )
                             })}
+                            </View>
+                            <View style={{
+                                display: removalModeActive ? 'flex' : 'none',
+                                justifyContent: 'center',
+                                alignItems: 'center',
+                                marginRight: 10
+                            }}>
+                                <RemovalBox addRemovalItem={() => {addRemovalItem(disciplina.key)}} removalModeActive={removalModeActive} removalModeHandler={removalModeHandler}/>
                             </View>
                         </Pressable>
                     )
                 })}
             </ScrollView>
-            <Footer navegacao={navigation}/>
+            <Footer removalModeActive={removalModeActive} removalModeHandler={() => removalModeHandler(removalList)} navegacao={navigation}/>
         </>
     )
 }
