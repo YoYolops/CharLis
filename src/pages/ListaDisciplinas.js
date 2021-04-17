@@ -1,6 +1,5 @@
 import React, { useContext, useState } from 'react';
 import { StyleSheet, Text, View, ScrollView, Pressable } from 'react-native';
-import Ionicons from 'react-native-vector-icons/Ionicons';
 
 import RemovalBox from '../components/RemovalBox/RemovalBox';
 import DisciplinasContext from '../components/context/DisciplinasContext'
@@ -12,6 +11,8 @@ function ListaDisciplinas({ navigation }) {
     const [ removalList, setRemovalList ] = useState([])
 
     function removalModeHandler(listaRemocao) { //função compartilhada com o footer
+        // Função responsável por organizar as disciplinas que o usuário quer deletar em uma lista
+        // e enviá-la ao método >removeDisciplina< do context
         if (removalModeActive && listaRemocao.length !== 0) {
             removeDisciplina(listaRemocao)
             setRemovalList([])
@@ -21,6 +22,8 @@ function ListaDisciplinas({ navigation }) {
     }
 
     function interruptRemovalMode() {
+        // Caso o modo de remoção de disciplinas seja interrompido, ess função é usada para garantir que 
+        // que nenhum efeito colateral passe adiante
         if (removalModeActive) {
             setRemovalList([])
             setRemovalModeActive(false)
@@ -28,6 +31,8 @@ function ListaDisciplinas({ navigation }) {
     }
 
     function addRemovalItem(index) {
+        // Adiciona uma disciplina à lista de disciplinas que serão excluídas
+
         let newArrayRemoval = Array.from(removalList)
         newArrayRemoval.push(index)
         //console.log(newArrayRemoval)
@@ -35,6 +40,8 @@ function ListaDisciplinas({ navigation }) {
     }
 
     function removeRemovalItem(index) {
+        // remove uma disciplina da lista de disciplinas que serão excluídas
+
         let newArrayRemoval = Array.from(removalList)
         newArrayRemoval.splice(newArrayRemoval.indexOf(index), 1)
         console.log(newArrayRemoval)

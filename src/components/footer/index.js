@@ -7,6 +7,7 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
 function Footer(props) {
+    // Todos os métodos usados no Footer são herdados por props do componente pai (ListaDisciplinas)
     const { colors, darkModeActive, switchDarkMode } = useContext(DisciplinasContext)
 
     return (

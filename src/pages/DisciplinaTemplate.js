@@ -26,6 +26,7 @@ function DisciplinasTemplate({ route }) {
     }
 
     useEffect(() => {
+        // Cria a estrutura de dados necessária para renderização do image viwer
         let newImages = [];
         let newDocuments = []
 
@@ -59,11 +60,16 @@ function DisciplinasTemplate({ route }) {
             name: documentInfo.name,
             uri: documentInfo.uri
         }
-        const newDocumentsArray = Array.from(documents)
-        newDocumentsArray.push(documentData)
-        //console.log('array novo:')
-        //console.log(newDocumentsArray)
-        updateDisciplinas(key, newDocumentsArray)
+        // caso o document picker seja fechado sem selecionar documento, documentData.uri é undefined
+        // queremos evitar que documentos vazios sejam salvos para evitar que os métodos de exibição
+        // quebrem, uma vez que não tem como exibir um documento undefined, por isso:
+        if (!!documentData.uri) {
+            const newDocumentsArray = Array.from(documents)
+            newDocumentsArray.push(documentData)
+            //console.log('array novo:')
+            //console.log(newDocumentsArray)
+            updateDisciplinas(key, newDocumentsArray)
+        }
     }
 
 

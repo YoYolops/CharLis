@@ -16,10 +16,15 @@ export function DisciplinasProvider({ children }) {
     useEffect(() => {
         async function loadStoragedDisciplinasData() {
             const storagedDisciplinaData = await AsyncStorage.getItem('@CharLis:disciplinas');
+            const storagedDarkModeState = await AsyncStorage.getItem('@CharLis:darkModeState')
 
             if (storagedDisciplinaData) {
                 const arrayDisciplinas = JSON.parse(storagedDisciplinaData).disciplinas
                 setDisciplinas(arrayDisciplinas)
+            }
+            if (storagedDarkModeState) {
+                const darkModeState = JSON.parse(storagedDarkModeState).darkModeState
+                setDarkModeActive(darkModeState)
             }
         }
         loadStoragedDisciplinasData()
@@ -61,7 +66,8 @@ export function DisciplinasProvider({ children }) {
         setDisciplinas(novoArrayDisciplinas)
     }
 
-    function switchDarkMode() {
+    async function switchDarkMode() {
+        await AsyncStorage.setItem('@CharLis:darkModeState', JSON.stringify({darkModeState: !darkModeActive}))
         setDarkModeActive(!darkModeActive)
     }
 
