@@ -1,18 +1,20 @@
 import React, { useContext, useState, useEffect } from 'react';
-import { ScrollView, View, Text, StyleSheet, Pressable, Image, Modal } from 'react-native';
+import { ScrollView, View, Text, StyleSheet, Pressable, Image, Modal, Alert } from 'react-native';
 import * as IntentLauncher from 'expo-intent-launcher';
 import * as DocumentPicker from 'expo-document-picker';
 import ImageViewer from 'react-native-image-zoom-viewer';
 
 import DisciplinasContext from '../components/context/DisciplinasContext';
+import NoteInteractor from '../components/FileInteractor/NoteInteractor';
+import FormAddNote from '../components/forms/FormAddNote';
 
 function DisciplinasTemplate({ route }) {
     const { horario, key } = route.params
-    const { updateDisciplinas, disciplinas, darkModeActive, colors } = useContext(DisciplinasContext)
-    const [ documents, setDocuments ] = useState(disciplinas[key].documentos)
-    const [ files, setFiles ] = useState({images: [], documents: []})
-    const [ modalVisible, setModalVisible ] = useState(false)
-    const [ modalInitialIndex, setModalInitialIndex ] = useState(0)
+    const { updateDisciplinas, disciplinas, darkModeActive, colors } = useContext(DisciplinasContext);
+    const [ documents, setDocuments ] = useState(disciplinas[key].documentos);
+    const [ files, setFiles ] = useState({images: [], documents: [], notes: []});
+    const [ modalVisible, setModalVisible ] = useState(false);
+    const [ modalInitialIndex, setModalInitialIndex ] = useState(0);
 
     function isImage(fileName) {
         //verifica se o nome do arquivo possui extenção de imagem, retorna true em caso afirmativo
@@ -28,7 +30,8 @@ function DisciplinasTemplate({ route }) {
     useEffect(() => {
         // Cria a estrutura de dados necessária para renderização do image viwer
         let newImages = [];
-        let newDocuments = []
+        let newDocuments = [];
+        let newNotes = []
 
         disciplinas[key].documentos.forEach(document => {
             if (isImage(document.name)) {
@@ -41,11 +44,14 @@ function DisciplinasTemplate({ route }) {
                         resizeMode: 'contain'
                     }
                 })
-            } else {
+            } else if (document.isNote) {
+                newNotes.push(document)
+            } 
+            else {
                 newDocuments.push(document)
             }
         })
-        setFiles({images: newImages, documents: newDocuments})
+        setFiles({images: newImages, documents: newDocuments, notes: newNotes })
         setDocuments(disciplinas[key].documentos)
     }, [disciplinas])
 
@@ -70,6 +76,12 @@ function DisciplinasTemplate({ route }) {
             //console.log(newDocumentsArray)
             updateDisciplinas(key, newDocumentsArray)
         }
+    }
+
+    function addNote(noteData) {
+        const newDocumentsArray = Array.from(documents)
+        newDocumentsArray.push(noteData)
+        updateDisciplinas(key, newDocumentsArray)
     }
 
 
@@ -119,14 +131,23 @@ function DisciplinasTemplate({ route }) {
                     {
                         files.documents.map((document, index) => {
                             return (
-                                <Pressable key={index} style={styles.documentPressable} onPress={ () => {
-                                    IntentLauncher.startActivityAsync('android.intent.action.VIEW', {
-                                        data: document.uri,
-                                        flags: 1,
-                                     });
-                                }}>
-                                    <Text style={[{color: darkModeActive ? '#ddd' : colors.blackDefault},styles.documentsTitles]}>{document.name}</Text>
-                                </Pressable>
+                                <View key={index} style={styles.documentPressableContainer}>
+                                    <Pressable android_ripple={{color: "#1db954", borderless: true}} style={styles.documentPressable} onPress={ () => {
+                                        try {
+                                            IntentLauncher.startActivityAsync('android.intent.action.VIEW', {
+                                                data: document.uri,
+                                                flags: 1,
+                                            });
+                                        } catch (error) {
+                                            Alert.alert(
+                                                "Falha ao abrir arquivo: ",
+                                                `Erro: ${error}`
+                                            )
+                                        }
+                                    }}>
+                                        <Text style={[{color: darkModeActive ? '#ddd' : colors.blackDefault},styles.documentsTitles]}>{document.name}</Text>
+                                    </Pressable>
+                                </View>
                             )
                         })
                     }
@@ -136,6 +157,15 @@ function DisciplinasTemplate({ route }) {
                 <Pressable onPress={pickDocumentHandler} style={styles.importDocumentButton} android_ripple={{color: "#1db954"}}>
                     <Text style={styles.importButtonDocumentText}>IMPORTAR ARQUIVO</Text>
                 </Pressable>
+            </View>
+            <View style={styles.notesContainer}>
+                <Text style={styles.textHeader}>Anotações: </Text>
+                <View style={styles.buttonsContainer}>
+                    {
+                        files.notes.map((note, index) => <NoteInteractor key={index} name={note.name} />)
+                    }
+                </View>
+                <FormAddNote noteCreator={addNote} />
             </View>
         </ScrollView>
     )    
@@ -198,16 +228,30 @@ const styles = StyleSheet.create({
         marginBottom: 2,
         fontSize: 14
     },
-    documentPressable: {
+    documentPressableContainer: {
         margin: 10,
+        marginRight: 0,
         borderLeftWidth:2,
         borderLeftColor: "#1db954",
         borderRadius: 5,
         height: 46,
-        justifyContent: 'center'
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        flexDirection: 'row'
+    },
+    documentPressable: {
+        height: 46,
+        justifyContent: 'center',
+        maxWidth: '90%',
     },
     documentsTitles: {
         marginLeft: 10,
+    },
+    notesContainer: {
+        borderTopWidth: 3,
+        borderTopColor: "#1db954",
+        marginTop: 5,
+        flexDirection: 'column',
     },
     buttonsContainer: {
         margin: 10,
