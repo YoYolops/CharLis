@@ -33,7 +33,7 @@ function DisciplinasTemplate({ route }) {
         let newDocuments = [];
         let newNotes = []
 
-        disciplinas[key].documentos.forEach(document => {
+        disciplinas[key].documentos.forEach((document, index) => {
             if (isImage(document.name)) {
                 newImages.push({
                     url: '',
@@ -45,7 +45,7 @@ function DisciplinasTemplate({ route }) {
                     }
                 })
             } else if (document.isNote) {
-                newNotes.push(document)
+                newNotes.push({ key: index, ...document })
             } 
             else {
                 newDocuments.push(document)
@@ -81,6 +81,13 @@ function DisciplinasTemplate({ route }) {
     function addNote(noteData) {
         const newDocumentsArray = Array.from(documents)
         newDocumentsArray.push(noteData)
+        updateDisciplinas(key, newDocumentsArray)
+    }
+
+    function updateNote(noteData, indexAlteracao) {
+
+        const newDocumentsArray = Array.from(documents)
+        newDocumentsArray.splice(indexAlteracao, 1, noteData)
         updateDisciplinas(key, newDocumentsArray)
     }
 
@@ -160,12 +167,20 @@ function DisciplinasTemplate({ route }) {
             </View>
             <View style={styles.notesContainer}>
                 <Text style={styles.textHeader}>Anotações: </Text>
-                <View style={styles.buttonsContainer}>
+                <View>
                     {
-                        files.notes.map((note, index) => <NoteInteractor key={index} name={note.name} />)
+                        files.notes.map((note, index) => {
+                            return (
+                                <View key={index} style={styles.documentPressableContainer}>
+                                    <NoteInteractor key={index} updateNote={updateNote} index={note.index} title={note.name} texto={note.content}/>
+                                </View>
+                            )
+                        })
                     }
                 </View>
-                <FormAddNote noteCreator={addNote} />
+                <View style={styles.buttonsContainer}>
+                    <FormAddNote noteCreator={addNote} />
+                </View>
             </View>
         </ScrollView>
     )    

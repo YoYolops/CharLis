@@ -10,11 +10,6 @@ function FormAddNote(props) {
     
     function sendNote() {
         if (noteTitle.trim() !== '' && noteText.trim() !== '') {
-            const obj = {
-                isNote: true,
-                name: noteTitle,
-                content: noteText  
-            }
             props.noteCreator({
                 isNote: true,
                 name: noteTitle,
