@@ -44,7 +44,6 @@ function ListaDisciplinas({ navigation }) {
 
         let newArrayRemoval = Array.from(removalList)
         newArrayRemoval.splice(newArrayRemoval.indexOf(index), 1)
-        console.log(newArrayRemoval)
         setRemovalList(newArrayRemoval)
     }
 
@@ -88,7 +87,15 @@ function ListaDisciplinas({ navigation }) {
                                 alignItems: 'center',
                                 marginRight: 10
                             }}>
-                                <RemovalBox addRemovalItem={() => {addRemovalItem(index)}} removeRemovalItem={() => {removeRemovalItem(index)}} removalModeActive={removalModeActive} removalModeHandler={removalModeHandler}/>
+                                <RemovalBox 
+                                    addRemovalItem={() => {addRemovalItem(index)}}
+                                    removeRemovalItem={() => {removeRemovalItem(index)}}
+                                    removalModeActive={removalModeActive}
+                                    interruptRemovalMode={() => {interruptRemovalMode()}}
+                                    hitSlop={64}
+                                    size={28}
+                                    ico={1}
+                                />
                             </View>
                         </Pressable>
                     )

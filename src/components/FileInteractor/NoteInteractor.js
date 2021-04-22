@@ -20,13 +20,17 @@ function NoteInteractor(props) {
             name: editedTitle,
             content: editedContent
         }
-        console.log(newNote)
         props.updateNote(newNote, props.index)
         setShowNoteInfo(false)
     }
 
     return (
-        <Pressable onPress={() => {setShowNoteInfo(true)}} style={styles.noteInteractorContainer} android_ripple={{color: "#1db954"}}>
+        <Pressable
+            onPress={() => {setShowNoteInfo(true)}}
+            onLongPress={props.longPressFunction}
+            style={styles.noteInteractorContainer}
+            android_ripple={{color: "#1db954", borderless: true}}    
+        >
             <Text style={styles.noteTitle}>{props.title}</Text>
             <Modal
                 animationType="slide"
@@ -85,6 +89,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         marginLeft: 10,
         height: 46,
+        borderRadius: 10,
     },
     noteTitle: {
         color: '#ddd'

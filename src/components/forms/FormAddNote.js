@@ -15,6 +15,7 @@ function FormAddNote(props) {
                 name: noteTitle,
                 content: noteText  
             })
+            setFormActive(false)
         } else {
             Alert.alert(
                 "Preencha os Campos",

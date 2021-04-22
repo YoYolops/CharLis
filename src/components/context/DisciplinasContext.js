@@ -66,6 +66,17 @@ export function DisciplinasProvider({ children }) {
         setDisciplinas(novoArrayDisciplinas)
     }
 
+    async function removeFiles(listaIndexesRemocaoDocumentos, indexDisciplina) {
+        const antigaDisciplina = disciplinas[indexDisciplina]
+        const novoArrayDocumentos = Array.from(antigaDisciplina.documentos)
+
+        for (let i = 0; i < listaIndexesRemocaoDocumentos.length; i++) {
+            novoArrayDocumentos.splice(listaIndexesRemocaoDocumentos[i] - i, 1)
+        }
+
+        await updateDisciplinas(indexDisciplina, novoArrayDocumentos)
+    }
+
     async function switchDarkMode() {
         await AsyncStorage.setItem('@CharLis:darkModeState', JSON.stringify({darkModeState: !darkModeActive}))
         setDarkModeActive(!darkModeActive)
@@ -81,6 +92,7 @@ export function DisciplinasProvider({ children }) {
                 darkModeActive,
                 switchDarkMode,
                 colors,
+                removeFiles
             }}
         >
             {children}
