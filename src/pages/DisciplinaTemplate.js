@@ -38,10 +38,7 @@ function DisciplinasTemplate({ route }) {
         let newDocuments = [];
         let newNotes = []
 
-        console.log('useEffect')
-
         disciplinas[key].documentos.forEach((document, index) => {
-            console.log(`index: ${index}`)
             if (isImage(document.name)) {
                 newImages.push({
                     url: '',
@@ -117,14 +114,12 @@ function DisciplinasTemplate({ route }) {
     function addRemovalItem(index) {
         let newArrayRemoval = Array.from(removalList)
         newArrayRemoval.push(index)
-        console.log(newArrayRemoval)
         setRemovalList(newArrayRemoval.sort((a,b) => a-b))
     }
 
     function removeRemovalItem(index) {
         let newArrayRemoval = Array.from(removalList)
         newArrayRemoval.splice(newArrayRemoval.indexOf(index), 1)
-        console.log(newArrayRemoval)
         setRemovalList(newArrayRemoval)
     }
 

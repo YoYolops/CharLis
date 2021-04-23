@@ -66,7 +66,7 @@ export function DisciplinasProvider({ children }) {
         setDisciplinas(novoArrayDisciplinas)
     }
 
-    async function removeFiles(listaIndexesRemocaoDocumentos, indexDisciplina) {
+    function removeFiles(listaIndexesRemocaoDocumentos, indexDisciplina) {
         const antigaDisciplina = disciplinas[indexDisciplina]
         const novoArrayDocumentos = Array.from(antigaDisciplina.documentos)
 
@@ -74,7 +74,7 @@ export function DisciplinasProvider({ children }) {
             novoArrayDocumentos.splice(listaIndexesRemocaoDocumentos[i] - i, 1)
         }
 
-        await updateDisciplinas(indexDisciplina, novoArrayDocumentos)
+        updateDisciplinas(indexDisciplina, novoArrayDocumentos)
     }
 
     async function switchDarkMode() {
