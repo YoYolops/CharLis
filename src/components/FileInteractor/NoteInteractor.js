@@ -26,7 +26,9 @@ function NoteInteractor(props) {
 
     return (
         <Pressable
-            onPress={() => {setShowNoteInfo(true)}}
+            onPress={() => {
+                props.interruptRemovalMode()
+                setShowNoteInfo(true)}}
             onLongPress={props.longPressFunction}
             style={styles.noteInteractorContainer}
             android_ripple={{color: "#1db954", borderless: true}}    

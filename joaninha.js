@@ -6,6 +6,8 @@ for (let i=0; i < 10; i++) {
     lista.push(i)
 }
 
-let variavel = null;
+console.log(`lista bruta: ${lista}`)
 
-console.log(!!variavel)
+lista.splice(0,1,10)
+
+console.log(`novaLita: ${lista}`)

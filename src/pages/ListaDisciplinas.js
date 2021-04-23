@@ -66,7 +66,7 @@ function ListaDisciplinas({ navigation }) {
                             darkModeActive ? styles.disciplinaCadastradaDark : styles.disciplinaCadastradaLight
                         ]}
                         onPress={() => {
-                            removalModeActive ? setRemovalModeActive(false) : void(0)
+                            removalModeActive ? interruptRemovalMode(false) : void(0)
                             navigation.navigate("DisciplinaTemplate", {
                                 title: disciplina.nome,
                                 horario: disciplina.horario,

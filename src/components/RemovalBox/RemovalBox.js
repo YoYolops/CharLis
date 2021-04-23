@@ -11,6 +11,7 @@ function RemovalBox(props) {
     const { colors } = useContext(DisciplinasContext)
 
     useEffect(() => {
+        // essencial, garante que toda vez que o removalMode ativar, todos os estados vão estar virgens
         setSelected(false)
     }, [props.removalModeActive])
 
@@ -25,11 +26,11 @@ function RemovalBox(props) {
     }
 
     return (
-        <Pressable style={{display: props.removalModeActive ? 'flex' : 'none'}} onPress={pressHandler} android_ripple={{color: colors.redDefault, borderless: true}} hitSlop={props.hitSlop}>
+        <Pressable style={{display: props.removalModeActive ? 'flex' : 'none', borderLeftWidth: 2, borderLeftColor: colors.redDefault}} onPress={pressHandler} android_ripple={{color: colors.redDefault, borderless: true}} hitSlop={props.hitSlop}>
             {
                 props.ico === 1 
-                ? <Ionicons size={props.size} style={{color: colors.redDefault}} name={props.removalModeActive ? selected ? "remove-circle-sharp" : "remove-circle-outline": ''} />
-                : <AntDesign size={props.size} style={{color: colors.redDefault}} name={props.removalModeActive ? selected ? "closecircle" : "closecircleo": ''}/>
+                ? <Ionicons size={props.size} style={{color: colors.redDefault, marginRight: 5, marginLeft: 5}} name={props.removalModeActive ? selected ? "remove-circle-sharp" : "remove-circle-outline": ''} />
+                : <AntDesign size={props.size} style={{color: colors.redDefault, marginRight: 5, marginLeft: 5}} name={props.removalModeActive ? selected ? "closecircle" : "closecircleo": ''}/>
             }
         </Pressable>
     )

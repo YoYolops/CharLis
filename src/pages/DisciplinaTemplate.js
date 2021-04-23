@@ -157,6 +157,7 @@ function DisciplinasTemplate({ route }) {
                                         setRemovalModeActive(true)
                                     }} 
                                     onPress={() => {
+                                        interruptRemovalMode()
                                         setModalInitialIndex(index)
                                         setModalVisible(true)
                                 }}>
@@ -188,6 +189,7 @@ function DisciplinasTemplate({ route }) {
                                     <View key={index} style={styles.documentPressableContainer}>
                                         <Pressable android_ripple={{color: "#1db954", borderless: true}} style={styles.documentPressable}
                                             onPress={() => {
+                                                interruptRemovalMode()
                                                 try {
                                                     IntentLauncher.startActivityAsync('android.intent.action.VIEW', {
                                                         data: document.uri,
@@ -201,6 +203,7 @@ function DisciplinasTemplate({ route }) {
                                                 }
                                             }}
                                             onLongPress={() => {
+                                                Vibration.vibrate(30)
                                                 setRemovalModeActive(true)
                                             }}     
                                         >
@@ -232,7 +235,7 @@ function DisciplinasTemplate({ route }) {
                             files.notes.map((note, index) => {
                                 return (
                                     <View key={index} style={styles.documentPressableContainer}>
-                                        <NoteInteractor key={index} longPressFunction={() => {setRemovalModeActive(true)}} updateNote={updateNote} index={note.index} title={note.name} texto={note.content}/>
+                                        <NoteInteractor longPressFunction={() => {Vibration.vibrate(30);setRemovalModeActive(true)}} interruptRemovalMode={interruptRemovalMode} updateNote={updateNote} index={note.key} title={note.name} texto={note.content}/>
                                         <RemovalBox
                                             addRemovalItem={() => {addRemovalItem(note.key)}}
                                             removeRemovalItem={() => {removeRemovalItem(note.key)}}
@@ -361,6 +364,7 @@ const styles = StyleSheet.create({
     },
     documentPressableContainer: {
         margin: 10,
+        marginRight: 0,
         borderLeftWidth:2,
         borderLeftColor: "#1db954",
         borderRadius: 5,

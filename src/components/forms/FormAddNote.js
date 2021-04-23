@@ -47,7 +47,6 @@ function FormAddNote(props) {
                         </Pressable>
                     </View>
                 </View>
-
             </Modal>
         </Pressable>
     );
