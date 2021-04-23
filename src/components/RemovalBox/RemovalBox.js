@@ -1,10 +1,9 @@
-import React, { useState, useContext  } from 'react';
-import { Pressable, StyleSheet } from 'react-native'
+import React, { useState, useContext, useEffect  } from 'react';
+import { Pressable } from 'react-native'
 
 import DisciplinasContext from '../context/DisciplinasContext';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import AntDesign from 'react-native-vector-icons/AntDesign';
-import { useEffect } from 'react/cjs/react.development';
 
 
 function RemovalBox(props) {

@@ -8,7 +8,6 @@ import DisciplinasContext from '../components/context/DisciplinasContext';
 import NoteInteractor from '../components/FileInteractor/NoteInteractor';
 import RemovalBox from '../components/RemovalBox/RemovalBox';
 import FormAddNote from '../components/forms/FormAddNote';
-import { set } from 'react-native-reanimated';
 
 function DisciplinasTemplate({ route }) {
     const { horario, key } = route.params
